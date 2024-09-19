@@ -2,6 +2,21 @@
 
 Algorithm used to extract parts of an mp3 file that are over a given value of decibel.
 
+# Requirements
+
+# Python
+
+version 3
+
+## python modules
+
+- `ffmpegio` version 0.10.0
+- `ffmpegio-core` version 0.10.0
+
+## other
+
+- `ffmpeg` (used with 7.0.2)
+
 # Settings
 
 
