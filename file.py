@@ -5,7 +5,7 @@ import glob as glob
 import csv
 import re
 
-all_files = ["a.mp3"]
+all_files = ["k.mp3"]
 nframes = 16 
 base_volume = 1
 min_duration = 0.15
@@ -18,7 +18,7 @@ for file in all_files:
     os.system(f'echo $(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {file}) > duration.txt')
     duration = open("duration.txt", "r")
     duration = float(duration.read())
-     
+
     cur_lst = []
     cur_lst2 = []
     with ffmpegio.open(file, 'ra', blocksize = nframes, sample_fmt = 'dbl') as file_opened:
@@ -48,7 +48,7 @@ for file in all_files:
                 if idx1 - idx2 - cur_lst[idx1:idx2].count("end") > min_sound_per_sec * cur_duration:
                     os.system(f'ffmpeg -i {file} -acodec copy -ss {(v_strt - 1) * duration} -to {v_end} cur_split/{v_af}.mp3')
                     if i + 1 < len(cur_lst):
-                        v_strt = cur_lst[i + 1]
+                        v_strt = cur_lst[i + 1] 
                         v_af += 1
                 elif i + 1 < len(cur_lst):
                     v_strt = cur_lst[i + 1]
