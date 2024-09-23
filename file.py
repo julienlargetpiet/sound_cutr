@@ -5,20 +5,25 @@ import glob as glob
 import csv
 import re
 
-all_files = ["k.mp3"]
+all_files = ["k.mp3", "g.mp3"]
 nframes = 16 
 base_volume = 1
 min_duration = 0.15
 min_sound_per_sec = 1100
 
 for file in all_files:
-    
+
+    cur_csv = file[0:(len(file) - 3)] + "csv"
+    cur_csv = open(cur_csv, "w")
+    cur_csv = csv.writer(cur_csv, delimiter = ",", lineterminator = "\n")
+   
     for i in os.listdir("cur_split"): os.remove(f"cur_split/{i}")
 
     os.system(f'echo $(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {file}) > duration.txt')
     duration = open("duration.txt", "r")
     duration = float(duration.read())
 
+    timestamps_lst = [["start", "end"]]
     cur_lst = []
     cur_lst2 = []
     with ffmpegio.open(file, 'ra', blocksize = nframes, sample_fmt = 'dbl') as file_opened:
@@ -47,12 +52,14 @@ for file in all_files:
                 idx2 = cur_lst.index(v_strt)
                 if idx1 - idx2 - cur_lst[idx1:idx2].count("end") > min_sound_per_sec * cur_duration:
                     os.system(f'ffmpeg -i {file} -acodec copy -ss {(v_strt - 1) * duration} -to {v_end} cur_split/{v_af}.mp3')
+                    timestamps_lst.append([v_strt - 1, v_end])
                     if i + 1 < len(cur_lst):
                         v_strt = cur_lst[i + 1] 
                         v_af += 1
                 elif i + 1 < len(cur_lst):
                     v_strt = cur_lst[i + 1]
 
+    cur_csv.writerows(timestamps_lst)
     cur_glob = []
     for i in range(0, len(glob.glob("cur_split/*.mp3"))): cur_glob.append(f"file 'cur_split/{i}.mp3'")
     cur_files = open("cur_files.txt", "w")
@@ -60,5 +67,7 @@ for file in all_files:
     cur_files.close()
 
     os.system(f"ffmpeg -f concat -i cur_files.txt -acodec copy output_dir/{file}")
+
+
 
 
