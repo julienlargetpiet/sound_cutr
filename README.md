@@ -1,6 +1,6 @@
 # sound_cutr
 
-Algorithm used to extract parts of an mp3 file that are over a given value of decibel.
+Algorithms used to extract parts of an mp3 file that are over a given value of decibel.
 
 # Requirements
 
