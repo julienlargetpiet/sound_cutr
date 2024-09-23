@@ -52,8 +52,11 @@ for file in all_files:
             cur_duration = (cur_lst[i - 1] - v_strt) * duration 
             if cur_duration > min_duration:
                 v_end = cur_lst[i - 1] * duration
-                os.system(f'ffmpeg -i {file} -acodec copy -ss {(v_strt - 1) * duration} -to {v_end} cur_split/{v_af}.mp3')
-                timestamps_lst.append([(v_strt - 1) * duration, v_end])
+                if v_strt - 1 > 0:
+                    v_strt -= 1
+                v_strt *= duration
+                os.system(f'ffmpeg -i {file} -acodec copy -ss {v_strt} -to {v_end} cur_split/{v_af}.mp3')
+                timestamps_lst.append([v_strt, v_end])
                 if i + 1 < len(cur_lst):
                     v_strt = cur_lst[i + 1] 
                     v_af += 1

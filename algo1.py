@@ -47,12 +47,15 @@ for file in all_files:
         if cur_lst[i] == "end":
             cur_duration = (cur_lst[i - 1] - v_strt) * duration 
             if cur_duration > min_duration:
-                v_end = cur_lst[i - 1] * duration
                 idx1 = cur_lst.index(cur_lst[i - 1])
                 idx2 = cur_lst.index(v_strt)
                 if idx1 - idx2 - cur_lst[idx1:idx2].count("end") > min_sound_per_sec * cur_duration:
-                    os.system(f'ffmpeg -i {file} -acodec copy -ss {(v_strt - 1) * duration} -to {v_end} cur_split/{v_af}.mp3')
-                    timestamps_lst.append([(v_strt - 1) * duration, v_end])
+                    if v_strt - 1 > 0:
+                        v_strt -= 1
+                    v_strt *= duration
+                    v_end = cur_lst[i - 1] * duration
+                    os.system(f'ffmpeg -i {file} -acodec copy -ss {v_strt} -to {v_end} cur_split/{v_af}.mp3')
+                    timestamps_lst.append([v_strt * duration, v_end])
                     if i + 1 < len(cur_lst):
                         v_strt = cur_lst[i + 1] 
                         v_af += 1
