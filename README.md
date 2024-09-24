@@ -19,6 +19,20 @@ version 3
 
 # Settings
 
+algo1.py:
+
+- `n_frames` is the amount of audio samples per block 
+- `base_volume` is the minimum decbel limit
+- `min_duration` is the the minimum duration, in seconds, an extract can be
+- `min_sound_per_sec` is the minimum sample number per second an exract should have
+
+
+algo2.py:
+
+- `n_frames` is the amount of audio samples per block 
+- `base_volume` is the minimum decbel limit
+- `min_duration` is the the minimum duration, in seconds, an extract can be
+- `min_cut_duration` is the duration, in seconds, from which a sequence of sample below `base_volume` won't be taken in count
 
 
 # Examples
