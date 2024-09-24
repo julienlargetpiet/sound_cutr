@@ -42,22 +42,32 @@ for file in all_files:
     v_af = 0
 
     for i in range(0, len(cur_lst)):
-        if i + 1 < len(cur_lst) and cur_lst[i] == "end" and cur_lst[i + 1] * duration - cur_lst[i - 1] * duration < min_cut_duration:
-            cur_lst[i] = cur_lst[i - 1] + 0.5
-
-    for i in range(0, len(cur_lst)):
         if cur_lst[i] == "end":
-            cur_duration = (cur_lst[i - 1] - v_strt) * duration 
-            if cur_duration > min_duration:
-                v_end = cur_lst[i - 1] * duration
-                if v_strt - 1 > 0:
-                    v_strt -= 1
-                v_strt *= duration
-                os.system(f'ffmpeg -i {file} -acodec copy -ss {v_strt} -to {v_end} cur_split/{v_af}.mp3')
-                timestamps_lst.append([v_strt, v_end])
-                if i + 1 < len(cur_lst):
-                    v_strt = cur_lst[i + 1] 
-                    v_af += 1
+            if i + 1 < len(cur_lst):
+                if cur_lst[i + 1] * duration - cur_lst[i - 1] * duration > min_cut_duration:
+                    cur_duration = (cur_lst[i - 1] - v_strt) * duration 
+                    if cur_duration > min_duration:
+                        v_end = cur_lst[i - 1] * duration
+                        if v_strt - 1 > 0:
+                            v_strt -= 1
+                        v_strt *= duration
+                        os.system(f'ffmpeg -i {file} -acodec copy -ss {v_strt} -to {v_end} cur_split/{v_af}.mp3')
+                        timestamps_lst.append([v_strt, v_end])
+                        if i + 1 < len(cur_lst):
+                            v_strt = cur_lst[i + 1] 
+                            v_af += 1
+            else:
+                cur_duration = (cur_lst[i - 1] - v_strt) * duration 
+                if cur_duration > min_duration:
+                    v_end = cur_lst[i - 1] * duration
+                    if v_strt - 1 > 0:
+                        v_strt -= 1
+                    v_strt *= duration
+                    os.system(f'ffmpeg -i {file} -acodec copy -ss {v_strt} -to {v_end} cur_split/{v_af}.mp3')
+                    timestamps_lst.append([v_strt, v_end])
+                    if i + 1 < len(cur_lst):
+                        v_strt = cur_lst[i + 1] 
+                        v_af += 1
 
     cur_csv.writerows(timestamps_lst)
     cur_glob = []
