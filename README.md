@@ -23,8 +23,20 @@ version 3
 
 # Examples
 
-Play the original `a.mp3` audio file and run the programm contained in `file.py` on it.
+Play the original `a.mp3` audio file and run one of these algos:
+
+`python3 algo1.py a.mp3`
+
+
+`python3 algo2.py a.mp3`
+
+
 The output file will be `output_dir/a.mp3`
+
+You can run these algos on multiple files at once:
+
+`python3 algo1or2.py file1.mp3 file2.mp3 ...`
+
 
 # Timestamps
 

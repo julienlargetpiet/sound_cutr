@@ -4,8 +4,9 @@ import os
 import glob as glob
 import csv
 import re
+import sys
 
-all_files = ["k.mp3", "g.mp3"]
+all_files = sys.argv[1:]
 nframes = 16 
 base_volume = 1
 min_duration = 0.15
