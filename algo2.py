@@ -10,7 +10,7 @@ all_files = sys.argv[1:]
 nframes = 16 
 base_volume = 1
 min_duration = 0.15
-min_cut_duration = 0.1
+min_cut_duration = 0.14
 
 for file in all_files:
 
@@ -20,9 +20,7 @@ for file in all_files:
    
     for i in os.listdir("cur_split"): os.remove(f"cur_split/{i}")
 
-    os.system(f'echo $(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {file}) > duration.txt')
-    duration = open("duration.txt", "r")
-    duration = float(duration.read())
+    duration = float(ffmpegio.probe.audio_streams_basic(file)[0]['duration']) / ffmpegio.probe.audio_streams_basic(file)[0]['nb_samples'] * nframes
 
     timestamps_lst = [["start", "end"]]
     cur_lst = []
@@ -38,7 +36,6 @@ for file in all_files:
             elif over_val:
                 cur_lst.append("end")
                 over_val = False
-        duration = duration / i 
 
     v_strt = cur_lst[0] 
     v_end = v_strt
