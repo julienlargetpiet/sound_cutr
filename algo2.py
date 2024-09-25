@@ -34,8 +34,7 @@ for file in all_files:
             elif over_val:
                 cur_lst.append("end")
                 over_val = False
-    print((i+1) * 16)
-    time.sleep(1)
+
     v_strt = cur_lst[0] 
     v_end = v_strt
     v_af = 0
