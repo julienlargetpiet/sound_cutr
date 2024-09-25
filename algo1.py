@@ -36,7 +36,6 @@ for file in all_files:
                 over_val = False
 
     v_strt = cur_lst[0] 
-    v_end = v_strt
     v_af = 0
  
     for i in range(0, len(cur_lst)):
