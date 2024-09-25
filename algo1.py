@@ -7,7 +7,7 @@ import re
 import sys
 
 all_files = sys.argv[1:]
-nframes = 16 
+nsamples = 16 
 base_volume = 1
 min_duration = 0.15
 min_sound_per_sec = 1100
@@ -20,11 +20,11 @@ for file in all_files:
    
     for i in os.listdir("cur_split"): os.remove(f"cur_split/{i}")
 
-    duration = float(ffmpegio.probe.audio_streams_basic(file)[0]['duration']) / ffmpegio.probe.audio_streams_basic(file)[0]['nb_samples'] * nframes
+    duration = float(ffmpegio.probe.audio_streams_basic(file)[0]['duration']) / ffmpegio.audio.read(file)[1].shape[0] * nsamples
 
     timestamps_lst = [["start", "end"]]
     cur_lst = []
-    with ffmpegio.open(file, 'ra', blocksize = nframes, sample_fmt = 'dbl') as file_opened:
+    with ffmpegio.open(file, 'ra', blocksize = nsamples, sample_fmt = 'dbl') as file_opened:
         over_val = False
         for i, indata in enumerate(file_opened):
             volume_norm = np.linalg.norm(indata) * 10
