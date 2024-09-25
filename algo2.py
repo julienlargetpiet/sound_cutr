@@ -42,7 +42,7 @@ for file in all_files:
     for i in range(0, len(cur_lst)):
         if cur_lst[i] == "end":
             if i + 1 < len(cur_lst):
-                if cur_lst[i + 1] * duration - cur_lst[i - 1] * duration > min_cut_duration:
+                if (cur_lst[i + 1] - cur_lst[i - 1]) * duration > min_cut_duration:
                     cur_duration = (cur_lst[i - 1] - v_strt) * duration 
                     if cur_duration > min_duration:
                         v_end = cur_lst[i - 1] * duration
