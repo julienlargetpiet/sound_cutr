@@ -24,19 +24,18 @@ for file in all_files:
 
     timestamps_lst = [["start", "end"]]
     cur_lst = []
-    cur_lst2 = []
     with ffmpegio.open(file, 'ra', blocksize = nsamples, sample_fmt = 'dbl') as file_opened:
         over_val = False
         for i, indata in enumerate(file_opened):
             volume_norm = np.linalg.norm(indata) * 10
-            cur_lst2.append(volume_norm)
             if volume_norm > base_volume:
                 cur_lst.append(i)
                 over_val = True
             elif over_val:
                 cur_lst.append("end")
                 over_val = False
-
+    print((i+1) * 16)
+    time.sleep(1)
     v_strt = cur_lst[0] 
     v_end = v_strt
     v_af = 0
